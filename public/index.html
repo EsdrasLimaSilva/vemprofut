@@ -3,11 +3,91 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="shortcut icon"
+            href="./assets/icon.png"
+            type="image/x-icon"
+        />
         <script src="https://cdn.tailwindcss.com"></script>
         <title>Vem Pro Fut</title>
     </head>
-    <body>
-        <h1>Hello World</h1>
+    <style>
+        li {
+            width: 100%;
+            padding: 8px;
+            background: #fafafa;
+        }
+    </style>
+    <body class="bg-gray-100">
+        <!-- Modal de criação de uma nova partida -->
+        <div
+            id="modal"
+            class="fixed top-o left-o w-screen h-screen flex flex-col justify-center items-center bg-[#22222230] hidden"
+        >
+            <h1
+                class="text-2xl font-bold bg-orange-400 text-white w-full max-w-[400px] text-center"
+            >
+                Nova Partida
+            </h1>
+
+            <!-- Formulário de criação de nova partida -->
+            <form
+                class="w-full max-w-[400px] flex flex-col gap-4 justify-center items-center"
+            >
+                <input
+                    type="text"
+                    placeholder="título"
+                    class="p-2 w-full bg-transparent outline-none bg-white"
+                />
+
+                <span class="w-fit flex flex-row gap-4">
+                    <button
+                        type="submit"
+                        class="bg-green-500 text-white py-1 px-4 font-semibold"
+                    >
+                        criar
+                    </button>
+                    <button
+                        type="button"
+                        class="bg-red-500 text-white py-1 px-4 font-semibold"
+                        id="fechar-modal-btn"
+                    >
+                        cancelar
+                    </button>
+                </span>
+            </form>
+        </div>
+
+        <!-- Parte principal com lista das partias -->
+        <main
+            class="min-h-screen w-screen flex flex-col items-center justify-center gap-8"
+        >
+            <!-- Cabeçalhho com título da página -->
+            <header>
+                <h1 class="text-3xl text-green-800 font-bold underline italic">
+                    Vem pro fut
+                </h1>
+            </header>
+
+            <!-- Lista de partidas -->
+            <ul
+                id="lista-partidas"
+                class="w-full max-w-[600px] h-[60vh] bg-white shadow-md flex flex-col gap-2 p-2 overflow-auto"
+            >
+                <li>Lista vazia!</li>
+            </ul>
+
+            <!-- Rodapé com botão de adicionar nova partida -->
+            <footer>
+                <button
+                    type="button"
+                    class="bg-orange-500 px-8 py-2 font-bold text-white shadow-md transition all hover:bg-orange-600"
+                    id="mostrar-modal-btn"
+                >
+                    Adicionar Partida
+                </button>
+            </footer>
+        </main>
         <script src="./main.js"></script>
     </body>
 </html>

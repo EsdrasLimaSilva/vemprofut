@@ -5,6 +5,7 @@ const port = 3000;
 
 /**
  partida = {
+    _id: string;
     titulo: string;
     local: string;
     horario: string;
@@ -16,18 +17,18 @@ const port = 3000;
 app.use(express.static("public"));
 app.use(express.json());
 
-app.get("/fut", (req, res) => {
-    const file = fs.readFileSync("./data.json", "utf-8");
-    res.json(file);
+app.get("/partidas", (req, res) => {
+    const file = fs.readFileSync("./partidas.json", "utf-8");
+    res.send(file);
 });
 
-app.put("/fut", (req, res) => {
-    const body = req.body;
-    fs.writeFileSync("./data.json", JSON.stringify(body), {encoding: "utf-8"});
-
-    file = fs.readFileSync("./data.json", "utf-8");
-
-    res.json(file);
-})
+app.put("/partidas", (req, res) => {
+    // const body = req.body;
+    // fs.writeFileSync("./partidas.json", JSON.stringify(body), {
+    //     encoding: "utf-8",
+    // });
+    // file = fs.readFileSync("./partidas.json", "utf-8");
+    // res.json(file);
+});
 
 app.listen(port);
