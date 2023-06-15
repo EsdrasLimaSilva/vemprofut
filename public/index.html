@@ -21,6 +21,7 @@
             align-items: center;
             font-weight: 600;
             color: rgb(19, 39, 68);
+            cursor: pointer;
         }
 
         li > span {
@@ -94,6 +95,35 @@
                     </button>
                 </span>
             </form>
+        </div>
+
+        <!-- Modal de exclusão (confirmação) de partida -->
+        <div
+            id="modal-remover"
+            class="fixed top-o left-o w-screen h-screen flex flex-col gap-2 justify-center items-center bg-[#22222230] hidden"
+        >
+            <div
+                class="w-full max-w-[400px] bg-white flex flex-col gap-8 items-center justify-center p-4 rounded-md"
+            >
+                <p>Tem certeza de que deseja excluir a partida?</p>
+
+                <span class="flex flex-row gap-4 font-semibold">
+                    <button
+                        type="button"
+                        class="text-green-800"
+                        id="confirmar-exclusao-btn"
+                    >
+                        Sim
+                    </button>
+                    <button
+                        type="button"
+                        class="text-slate-900"
+                        id="cancelar-exclusao-btn"
+                    >
+                        Cancelar
+                    </button>
+                </span>
+            </div>
         </div>
 
         <!-- Parte principal com lista das partias -->
