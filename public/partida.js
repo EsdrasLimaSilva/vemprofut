@@ -142,8 +142,25 @@ class App {
     preencherUi() {
         //titulo da partida
         const tituloElemento = this.criarElemento("h1", this.partida.titulo);
+        //local da partida
+        const localPartida = this.criarElemento(
+            "h2",
+            `Local: ${this.partida.local}`
+        );
+        //data da partida
+        const dataPartida = this.criarElemento(
+            "h2",
+            `Data: ${this.partida.data.dia} / ${this.partida.data.mes} / ${this.partida.data.ano}`
+        );
+        //hora da partida
+        const horaPartida = this.criarElemento(
+            "h2",
+            `Hora: ${this.partida.horario.horas} : ${this.partida.horario.minutos}h`
+        );
         //lista de jogadores
         const listaJogadores = this.criarElemento("ul");
+
+        const titutloJogadores = this.criarElemento("h3", "Jogadores");
 
         //preenchendo a lista de jogadores
         const childrenJogadores = [];
@@ -211,7 +228,14 @@ class App {
         listaJogadores.replaceChildren(...childrenJogadores);
 
         //preenchendo o elemento raiz
-        this.elementoRaiz.replaceChildren(tituloElemento, listaJogadores);
+        this.elementoRaiz.replaceChildren(
+            tituloElemento,
+            dataPartida,
+            horaPartida,
+            localPartida,
+            titutloJogadores,
+            listaJogadores
+        );
     }
 
     //cria um elemento

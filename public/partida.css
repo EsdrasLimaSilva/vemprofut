@@ -13,8 +13,8 @@ html {
 a {
     font-weight: bold;
     position: fixed;
-    top: 8px;
-    left: 8px;
+    top: 24px;
+    left: 24px;
     text-decoration: none;
     font-size: 1.4rem;
     color: blue;
@@ -26,6 +26,17 @@ h1 {
     text-align: center;
     font-weight: bold;
     color: rgb(11, 11, 104);
+}
+
+h2 {
+    font-size: 1rem;
+    color: rgb(4, 4, 31);
+    font-weight: normal;
+}
+
+h3 {
+    color: rgb(9, 9, 58);
+    margin-top: 32px;
 }
 
 button {
@@ -64,6 +75,7 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    margin-top: 24px;
 }
 
 select {

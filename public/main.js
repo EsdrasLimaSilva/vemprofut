@@ -66,7 +66,7 @@ class App {
     async criarPartida(e) {
         e.preventDefault();
 
-        const [tituloInput, dataInput, horaInput] = e.target;
+        const [tituloInput, dataInput, horaInput, enderecoInput] = e.target;
 
         const dataSplit = dataInput.value.split("-");
         const horaSplit = horaInput.value.split(":");
@@ -83,6 +83,7 @@ class App {
                 horas: horaSplit[0],
                 minutos: horaSplit[1],
             },
+            local: enderecoInput.value,
             jogadores: [],
         };
 
@@ -97,7 +98,11 @@ class App {
         this.esconderModal();
 
         //resetando valores
-        tituloInput.value = dataInput.value = horaInput.value = "";
+        tituloInput.value =
+            dataInput.value =
+            horaInput.value =
+            enderecoInput.value =
+                "";
     }
 
     async removerPartida() {
