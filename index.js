@@ -6,6 +6,7 @@ const {
     adicionarPartida,
     pegarPartidas,
     removerPartida,
+    buscarPartida,
 } = require("./matchs.js");
 
 const app = express();
@@ -36,7 +37,8 @@ app.delete("/partidas", (req, res) => {
 
 //resolve uma requisição de uma partida específica
 app.get("/partida/:idPartida", (req, res) => {
-    res.status(200);
+    const partida = buscarPartida(req.params.idPartida);
+    res.status(200).send(partida);
 });
 
 app.listen(port);

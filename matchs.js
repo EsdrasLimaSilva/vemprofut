@@ -11,6 +11,11 @@ const pegarPartidas = () => {
     return JSON.parse(file);
 };
 
+const buscarPartida = (idPartida) => {
+    const partidas = pegarPartidas();
+    return partidas.find((partida) => String(partida._id) === idPartida);
+};
+
 const adicionarPartida = (partida) => {
     const partidas = pegarPartidas();
     partidas.push(partida);
@@ -30,4 +35,5 @@ module.exports = {
     pegarPartidas,
     adicionarPartida,
     removerPartida,
+    buscarPartida,
 };
