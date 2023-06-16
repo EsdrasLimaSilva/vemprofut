@@ -1,6 +1,5 @@
-import { readFileSync } from "fs";
 import express, { json } from "express";
-import { adicionarPartida, pegarPartidas } from "./matchs.js";
+import { adicionarPartida, pegarPartidas, removerPartida } from "./matchs.js";
 const app = express();
 const port = 3000;
 
@@ -15,6 +14,12 @@ app.get("/partidas", (req, res) => {
 app.put("/partidas", (req, res) => {
     const partida = req.body;
     adicionarPartida(partida);
+    res.status(200).json({ message: "ok" });
+});
+
+app.delete("/partidas", (req, res) => {
+    const idPartida = req.query.id;
+    removerPartida(idPartida);
     res.status(200).json({ message: "ok" });
 });
 

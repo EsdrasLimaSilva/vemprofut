@@ -1,5 +1,6 @@
 class App {
     partidas = [];
+    idPartidaAlvo = "";
     containerPartidas = document.querySelector("#lista-partidas");
     criarPartidasForm = document.querySelector("#criar-partida-form");
     // elementos do modal
@@ -16,7 +17,7 @@ class App {
     }
 
     init() {
-        this.atualizarPartidas();
+        this.atualizarUI();
 
         //adiciona o evento de abrir o modal
         this.mostraModalBtn.addEventListener(
@@ -30,9 +31,16 @@ class App {
             this.esconderModal.bind(this)
         );
 
+        //adiciona o evento de excluir partida
+        this.confirmarExclusaoBtn.addEventListener(
+            "click",
+            this.removerPartida.bind(this)
+        );
+
+        //adiciona o evento de cancelar a exclusão da partida
         this.cancelarExclusaoBtn.addEventListener(
             "click",
-            this.esconderModalEclusao.bind(this)
+            this.esconderModalExclusao.bind(this)
         );
 
         //adiciona o evento de criação (envio do formulário) de criar partidas
@@ -43,8 +51,10 @@ class App {
 
         //adiciona tanto o evento de editar quanto o de abrir o modal de exclusão
         this.containerPartidas.addEventListener("click", (e) => {
-            if (e.target.closest("button")) this.mostrarModalExclusao();
-            else if (e.target.closest("li")) console.log("li");
+            if (e.target.closest("button")) {
+                this.mostrarModalExclusao();
+                this.idPartidaAlvo = e.target.closest("li").id;
+            } else if (e.target.closest("li")) console.log("li");
         });
     }
 
@@ -82,6 +92,14 @@ class App {
         console.log(data);
     }
 
+    async removerPartida() {
+        await fetch(`/partidas?id=${this.idPartidaAlvo}`, {
+            method: "DELETE",
+        });
+
+        this.esconderModalExclusao();
+    }
+
     // Mostra o modal de criação para o usário
     mostrarModal() {
         this.modal.classList.remove("hidden");
@@ -96,12 +114,12 @@ class App {
         this.modalExclusao.classList.remove("hidden");
     }
 
-    esconderModalEclusao() {
+    esconderModalExclusao() {
         this.modalExclusao.classList.add("hidden");
     }
 
     //atualiza a interface (lista) com as partidas atualizadas
-    atualizarPartidas() {
+    atualizarUI() {
         if (this.partidas) {
             const children = [];
 
@@ -111,6 +129,7 @@ class App {
                     "li",
                     partida.titulo
                 );
+                elementoPartida.setAttribute("id", partida._id);
 
                 const spanBotoes = document.createElement("span");
 
