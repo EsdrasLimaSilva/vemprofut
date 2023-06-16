@@ -54,7 +54,9 @@ class App {
             if (e.target.closest("button")) {
                 this.mostrarModalExclusao();
                 this.idPartidaAlvo = e.target.closest("li").id;
-            } else if (e.target.closest("li")) console.log("li");
+            } else if (e.target.closest("li")) {
+                console.log("li");
+            }
         });
     }
 

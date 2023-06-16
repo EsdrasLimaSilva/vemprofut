@@ -1,26 +1,33 @@
-import fs from "fs";
+const fs = require("fs");
 
-export const escreverPartidas = (partidas) => {
+const escreverPartidas = (partidas) => {
     fs.writeFileSync("./partidas.json", JSON.stringify(partidas), {
         encoding: "utf-8",
     });
 };
 
-export const pegarPartidas = () => {
+const pegarPartidas = () => {
     const file = fs.readFileSync("./partidas.json", "utf-8");
     return JSON.parse(file);
 };
 
-export const adicionarPartida = (partida) => {
+const adicionarPartida = (partida) => {
     const partidas = pegarPartidas();
     partidas.push(partida);
     escreverPartidas(partidas);
 };
 
-export const removerPartida = (idPartida) => {
+const removerPartida = (idPartida) => {
     const partidas = pegarPartidas();
     const novasPartidas = partidas.filter(
         (partida) => partida._id != idPartida
     );
     escreverPartidas(novasPartidas);
+};
+
+module.exports = {
+    escreverPartidas,
+    pegarPartidas,
+    adicionarPartida,
+    removerPartida,
 };
