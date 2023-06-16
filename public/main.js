@@ -81,15 +81,18 @@ class App {
             jogadores: [],
         };
 
-        const response = await fetch("/partidas", {
+        await fetch("/partidas", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(partida),
         });
-        const data = await response.json();
-        console.log(data);
+        await this.atualizarPartidas();
+        this.esconderModal();
+
+        //resetando valores
+        tituloInput.value = dataInput.value = horaInput.value = "";
     }
 
     async removerPartida() {
@@ -98,6 +101,7 @@ class App {
         });
 
         this.esconderModalExclusao();
+        await this.atualizarPartidas();
     }
 
     // Mostra o modal de criação para o usário
@@ -151,6 +155,13 @@ class App {
             );
             this.containerPartidas.replaceChildren(vazio);
         }
+    }
+
+    async atualizarPartidas() {
+        const response = await fetch("/partidas");
+        const partidas = await response.json();
+        this.partidas = partidas;
+        this.atualizarUI();
     }
 
     //cria um elemento
