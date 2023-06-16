@@ -8,6 +8,34 @@ class App {
 
     init() {
         this.preencherUi();
+
+        this.elementoRaiz.addEventListener("change", (e) =>
+            this.mudarStatusJogador(e.target.closest("li").id, e.target.value)
+        );
+    }
+
+    async mudarStatusJogador(idJogador, novoStatus) {
+        const jogador = this.partida.jogadores.find(
+            (jogador) => jogador._id === idJogador
+        );
+        jogador.status = novoStatus;
+
+        await fetch("/jogador", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idPartida: this.partida._id, jogador }),
+        });
+
+        this.atualizarPartida();
+        this.preencherUi();
+    }
+    async atualizarPartida() {
+        const response = await fetch(`/partida/${this.partida._id}`);
+        const partida = await response.json();
+
+        this.partida = partida;
     }
 
     preencherUi() {
@@ -21,6 +49,7 @@ class App {
         this.partida.jogadores.forEach((jogador) => {
             const elementoJogador = this.criarElemento("li");
             elementoJogador.classList.add(jogador.status);
+            elementoJogador.setAttribute("id", jogador._id);
 
             //criando elemento de informações
             const elementoInfo = this.criarElemento("span");
@@ -45,6 +74,18 @@ class App {
 
             const opacoDesfalque = this.criarElemento("option", "desfalque");
             opacoDesfalque.setAttribute("value", "desfalque");
+
+            switch (jogador.status) {
+                case "confirmado":
+                    opacaoConfirmado.setAttribute("selected", "true");
+                    break;
+                case "duvida":
+                    opacaoDuvida.setAttribute("selected", "true");
+                    break;
+                case "desfalque":
+                    opacoDesfalque.setAttribute("selected", "true");
+                    break;
+            }
 
             elementoAcoes.replaceChildren(
                 opacaoDuvida,

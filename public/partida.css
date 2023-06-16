@@ -24,9 +24,11 @@ ul {
     list-style-type: none;
     width: 100%;
     max-width: 600px;
-    box-shadow: 0px 1px 2px #22222230;
     background-color: white;
     height: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 select {
@@ -44,7 +46,8 @@ ul > li {
     align-items: center;
     font-size: 1rem;
     height: 100%;
-    color: white;
+    color: #222222;
+    box-shadow: 0px 1px 2px #22222230;
 }
 
 span.info {
@@ -61,13 +64,13 @@ span.info {
 }
 
 li.duvida {
-    background-color: rgb(82, 74, 74);
+    background-color: white;
 }
 
 li.desfalque {
-    background-color: rgb(146, 12, 12);
+    background-color: rgb(255, 179, 179);
 }
 
 li.confirmado {
-    background-color: rgb(28, 124, 25);
+    background-color: rgb(173, 255, 171);
 }

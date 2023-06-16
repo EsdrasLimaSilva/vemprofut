@@ -30,10 +30,24 @@ const removerPartida = (idPartida) => {
     escreverPartidas(novasPartidas);
 };
 
+const atualizarJogador = (idPartida, jogador) => {
+    const partidas = pegarPartidas();
+    const partidaIndex = partidas.findIndex(
+        (partida) => partida._id === idPartida
+    );
+    const jogadorIndex = partidas[partidaIndex].jogadores.findIndex(
+        (jgdr) => jgdr._id === jogador._id
+    );
+    partidas[partidaIndex].jogadores[jogadorIndex] = jogador;
+
+    escreverPartidas(partidas);
+};
+
 module.exports = {
     escreverPartidas,
     pegarPartidas,
     adicionarPartida,
     removerPartida,
     buscarPartida,
+    atualizarJogador,
 };

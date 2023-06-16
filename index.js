@@ -7,6 +7,7 @@ const {
     pegarPartidas,
     removerPartida,
     buscarPartida,
+    atualizarJogador,
 } = require("./matchs.js");
 
 const app = express();
@@ -39,6 +40,13 @@ app.delete("/partidas", (req, res) => {
 app.get("/partida/:idPartida", (req, res) => {
     const partida = buscarPartida(req.params.idPartida);
     res.status(200).send(partida);
+});
+
+//atualiza um jogador especifigo
+app.put("/jogador", (req, res) => {
+    const body = req.body;
+    atualizarJogador(body.idPartida, body.jogador);
+    res.json({ message: "ok" });
 });
 
 app.listen(port);
