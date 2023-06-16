@@ -1,5 +1,6 @@
 class App {
     partida;
+    idJogadorAlvo = "";
     elementoRaiz = document.querySelector("#root");
     modalCriacao = document.querySelector("#modal-criacao");
     novoJogadorForm = document.querySelector("form");
@@ -7,6 +8,11 @@ class App {
         "#cancelar-modal-criacao-btn"
     );
     adicionarJogadorBtn = document.querySelector("#adicionar-jogador-btn");
+    modalConfirmacao = document.querySelector("#modal-confirmacao");
+    confirmarExclusaoBtn = document.querySelector("#confirmar-btn");
+    cancelarConfirmacaoBtn = document.querySelector(
+        "#cancelar-confirmacao-btn"
+    );
 
     constructor(partida) {
         this.partida = partida;
@@ -19,28 +25,48 @@ class App {
             this.mudarStatusJogador(e.target.closest("li").id, e.target.value)
         );
 
+        this.elementoRaiz.addEventListener("click", (e) => {
+            const removerBtn = e.target.closest("button");
+
+            if (
+                removerBtn &&
+                removerBtn.classList.contains("remover-jogador-btn")
+            ) {
+                this.idJogadorAlvo = e.target.closest("li").id;
+                this.mostrarModal(this.modalConfirmacao);
+            }
+        });
+
         this.novoJogadorForm.addEventListener(
             "submit",
             this.criarNovoJogador.bind(this)
         );
 
-        this.adicionarJogadorBtn.addEventListener(
-            "click",
-            this.mostrarModalCriacao.bind(this)
+        this.adicionarJogadorBtn.addEventListener("click", () => {
+            this.mostrarModal(this.modalCriacao);
+        });
+
+        this.cancelarModalCriacaoBtn.addEventListener("click", () => {
+            this.esconderModal(this.modalCriacao);
+        });
+
+        this.confirmarExclusaoBtn.addEventListener("click", () =>
+            this.excluirJogador()
         );
 
-        this.cancelarModalCriacaoBtn.addEventListener(
-            "click",
-            this.esconderModalCriacao.bind(this)
-        );
+        this.cancelarConfirmacaoBtn.addEventListener("click", () => {
+            this.esconderModal(this.modalConfirmacao);
+        });
     }
 
-    mostrarModalCriacao() {
-        this.modalCriacao.classList.remove("hidden");
+    mostrarModal(modal) {
+        modal.classList.remove("hidden");
+        modal.classList.remove("hidden");
     }
 
-    esconderModalCriacao() {
-        this.modalCriacao.classList.add("hidden");
+    esconderModal(modal) {
+        modal.classList.add("hidden");
+        modal.classList.add("hidden");
     }
 
     async mudarStatusJogador(idJogador, novoStatus) {
@@ -76,7 +102,7 @@ class App {
         const [nomeInput, telefoneInput] = e.target;
 
         const jogador = {
-            _id: Math.round(Math.random() * 99999999),
+            _id: String(Math.round(Math.random() * 99999999)),
             nome: nomeInput.value,
             telefone: telefoneInput.value,
             status: "duvida",
@@ -95,6 +121,22 @@ class App {
         });
 
         nomeInput.value = telefoneInput.value = "";
+        this.esconderModal(this.modalCriacao);
+        await this.atualizarPartida();
+        this.preencherUi();
+    }
+
+    async excluirJogador() {
+        await fetch(
+            `/jogador?idJogador=${this.idJogadorAlvo}&idPartida=${this.partida._id}`,
+            {
+                method: "DELETE",
+            }
+        );
+
+        this.esconderModal(this.modalConfirmacao);
+        await this.atualizarPartida();
+        this.preencherUi();
     }
 
     preencherUi() {
@@ -155,6 +197,7 @@ class App {
             //criando botao de remocao
             const removerBtn = this.criarElemento("button", "x");
             removerBtn.setAttribute("type", "button");
+            removerBtn.classList.add("remover-jogador-btn");
 
             //prechendo o elemento jogador
             elementoJogador.replaceChildren(

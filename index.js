@@ -9,6 +9,7 @@ const {
     buscarPartida,
     atualizarJogador,
     adicionarJogador,
+    removerJogador,
 } = require("./matchs.js");
 
 const app = express();
@@ -52,6 +53,15 @@ app.put("/jogador", (req, res) => {
     if (!req.body.novoJogador) atualizarJogador(body.idPartida, body.jogador);
     else adicionarJogador(req.body.idPartida, req.body.jogador);
     res.json({ message: "ok" });
+});
+
+app.delete("/jogador", (req, res) => {
+    const idJogador = req.query.idJogador;
+    const idPartida = req.query.idPartida;
+
+    removerJogador(idPartida, idJogador);
+
+    res.status(200).json({ message: "ok" });
 });
 
 app.listen(port);

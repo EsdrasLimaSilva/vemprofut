@@ -51,6 +51,18 @@ const adicionarJogador = (idPartida, jogador) => {
     escreverPartidas(partidas);
 };
 
+const removerJogador = (idPartida, idJogador) => {
+    const partidas = pegarPartidas();
+    const partidaIndex = partidas.findIndex(
+        (partida) => partida._id === idPartida
+    );
+
+    partidas[partidaIndex].jogadores = partidas[partidaIndex].jogadores.filter(
+        (jogador) => jogador._id !== idJogador
+    );
+    escreverPartidas(partidas);
+};
+
 module.exports = {
     escreverPartidas,
     pegarPartidas,
@@ -59,4 +71,5 @@ module.exports = {
     buscarPartida,
     atualizarJogador,
     adicionarJogador,
+    removerJogador,
 };

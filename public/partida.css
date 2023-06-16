@@ -52,10 +52,14 @@ main {
     gap: 16px;
 }
 
+div#root {
+    width: 100%;
+    max-width: 700px;
+}
+
 ul {
     list-style-type: none;
     width: 100%;
-    max-width: 600px;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -88,7 +92,7 @@ span.info {
     gap: 8px;
     justify-content: flex-start;
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 1rem;
     align-items: center;
     width: fit-content;
     padding: 8px;
@@ -169,4 +173,33 @@ form > input:focus {
 
 form > button[type="button"] {
     background-color: rgb(41, 41, 41);
+}
+
+div#modal-confirmacao {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #22222230;
+}
+
+div#modal-confirmacao > div {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px;
+    border-radius: 8px;
+    gap: 16px;
+}
+
+div#modal-confirmacao > div > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
 }
