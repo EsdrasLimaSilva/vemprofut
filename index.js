@@ -8,6 +8,7 @@ const {
     removerPartida,
     buscarPartida,
     atualizarJogador,
+    adicionarJogador,
 } = require("./matchs.js");
 
 const app = express();
@@ -45,7 +46,11 @@ app.get("/partida/:idPartida", (req, res) => {
 //atualiza um jogador especifigo
 app.put("/jogador", (req, res) => {
     const body = req.body;
-    atualizarJogador(body.idPartida, body.jogador);
+
+    console.log(req.body.novoJogador);
+
+    if (!req.body.novoJogador) atualizarJogador(body.idPartida, body.jogador);
+    else adicionarJogador(req.body.idPartida, req.body.jogador);
     res.json({ message: "ok" });
 });
 

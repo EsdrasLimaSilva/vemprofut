@@ -43,6 +43,14 @@ const atualizarJogador = (idPartida, jogador) => {
     escreverPartidas(partidas);
 };
 
+const adicionarJogador = (idPartida, jogador) => {
+    const partidas = pegarPartidas();
+    partidas
+        .find((partida) => partida._id === idPartida)
+        .jogadores.push(jogador);
+    escreverPartidas(partidas);
+};
+
 module.exports = {
     escreverPartidas,
     pegarPartidas,
@@ -50,4 +58,5 @@ module.exports = {
     removerPartida,
     buscarPartida,
     atualizarJogador,
+    adicionarJogador,
 };

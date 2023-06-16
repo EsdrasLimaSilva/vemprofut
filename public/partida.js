@@ -1,6 +1,12 @@
 class App {
     partida;
     elementoRaiz = document.querySelector("#root");
+    modalCriacao = document.querySelector("#modal-criacao");
+    novoJogadorForm = document.querySelector("form");
+    cancelarModalCriacaoBtn = document.querySelector(
+        "#cancelar-modal-criacao-btn"
+    );
+    adicionarJogadorBtn = document.querySelector("#adicionar-jogador-btn");
 
     constructor(partida) {
         this.partida = partida;
@@ -12,6 +18,29 @@ class App {
         this.elementoRaiz.addEventListener("change", (e) =>
             this.mudarStatusJogador(e.target.closest("li").id, e.target.value)
         );
+
+        this.novoJogadorForm.addEventListener(
+            "submit",
+            this.criarNovoJogador.bind(this)
+        );
+
+        this.adicionarJogadorBtn.addEventListener(
+            "click",
+            this.mostrarModalCriacao.bind(this)
+        );
+
+        this.cancelarModalCriacaoBtn.addEventListener(
+            "click",
+            this.esconderModalCriacao.bind(this)
+        );
+    }
+
+    mostrarModalCriacao() {
+        this.modalCriacao.classList.remove("hidden");
+    }
+
+    esconderModalCriacao() {
+        this.modalCriacao.classList.add("hidden");
     }
 
     async mudarStatusJogador(idJogador, novoStatus) {
@@ -25,7 +54,11 @@ class App {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ idPartida: this.partida._id, jogador }),
+            body: JSON.stringify({
+                idPartida: this.partida._id,
+                jogador,
+                novoJogador: false,
+            }),
         });
 
         this.atualizarPartida();
@@ -36,6 +69,32 @@ class App {
         const partida = await response.json();
 
         this.partida = partida;
+    }
+
+    async criarNovoJogador(e) {
+        e.preventDefault();
+        const [nomeInput, telefoneInput] = e.target;
+
+        const jogador = {
+            _id: Math.round(Math.random() * 99999999),
+            nome: nomeInput.value,
+            telefone: telefoneInput.value,
+            status: "duvida",
+        };
+
+        await fetch("/jogador", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idPartida: this.partida._id,
+                jogador,
+                novoJogador: true,
+            }),
+        });
+
+        nomeInput.value = telefoneInput.value = "";
     }
 
     preencherUi() {
@@ -93,8 +152,16 @@ class App {
                 opacoDesfalque
             );
 
+            //criando botao de remocao
+            const removerBtn = this.criarElemento("button", "x");
+            removerBtn.setAttribute("type", "button");
+
             //prechendo o elemento jogador
-            elementoJogador.replaceChildren(elementoInfo, elementoAcoes);
+            elementoJogador.replaceChildren(
+                removerBtn,
+                elementoInfo,
+                elementoAcoes
+            );
             childrenJogadores.push(elementoJogador);
         });
 

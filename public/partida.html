@@ -12,7 +12,29 @@
         <link rel="stylesheet" href="partida.css" />
     </head>
     <body>
-        <main id="root"></main>
+        <!-- modal de adicionar jogador -->
+        <div id="modal-criacao" class="hidden">
+            <h2>Novo Jogador</h2>
+            <form>
+                <input type="text" placeholder="nome" required />
+                <input type="text" placeholder="telefone" required />
+
+                <button type="submit">criar</button>
+                <button type="button" id="cancelar-modal-criacao-btn">
+                    cancelar
+                </button>
+            </form>
+        </div>
+
+        <!-- link para volta à pagina inicial -->
+        <a href="/">Voltar</a>
+
+        <main>
+            <div id="root"></div>
+            <button type="button" id="adicionar-jogador-btn">
+                adicionar jogador
+            </button>
+        </main>
 
         <script src="./partida.js"></script>
     </body>
