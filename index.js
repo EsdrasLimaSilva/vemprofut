@@ -11,7 +11,7 @@ const {
 const app = express();
 const port = 3000;
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "/public")));
 app.use(json());
 
 //retorna todas as partidas
@@ -36,7 +36,7 @@ app.delete("/partidas", (req, res) => {
 
 //resolve uma requisição de uma partida específica
 app.get("/partida/:idPartida", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/partida.html"));
+    res.status(200);
 });
 
 app.listen(port);

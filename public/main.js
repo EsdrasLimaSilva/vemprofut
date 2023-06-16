@@ -51,11 +51,14 @@ class App {
 
         //adiciona tanto o evento de editar quanto o de abrir o modal de exclusão
         this.containerPartidas.addEventListener("click", (e) => {
-            if (e.target.closest("button")) {
+            const li = e.target.closest("li");
+            const button = e.target.closest("button");
+
+            if (button) {
                 this.mostrarModalExclusao();
-                this.idPartidaAlvo = e.target.closest("li").id;
-            } else if (e.target.closest("li")) {
-                console.log("li");
+                this.idPartidaAlvo = li.id;
+            } else if (li) {
+                window.location.replace(`/partida.html?id=${li.id}`);
             }
         });
     }
