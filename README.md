@@ -19,3 +19,14 @@ Para esse projeto deve ser construído os seguintes módulos:
 Os dados da aplicação devem ser guardados em um arquivo do tipo JSON. Para isso, utilize as
 funções nativas do NodeJS para ler (readFile) e escrever arquivos (writeFile). Sinta-se
 à vontade para personalizar esse projeto conforme necessário e adicionar funcionalidades adicionais, se desejar.
+
+## Como rodar
+
+basta clonar este reposiório, e digitar o seguinte comando dentro da pasta do projeto
+```
+npm install
+```
+em seguida basta rodar o comando abaixo e abrir o navegador no endereço localhost:5000
+```
+npm start
+```
