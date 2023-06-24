@@ -26,7 +26,7 @@ basta clonar este reposiório, e digitar o seguinte comando dentro da pasta do p
 ```
 npm install
 ```
-em seguida basta rodar o comando abaixo e abrir o navegador no endereço localhost:5000
+em seguida basta rodar o comando abaixo e abrir o navegador no endereço localhost:3000
 ```
 npm start
 ```
