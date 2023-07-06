@@ -16,34 +16,36 @@ class App {
         this.partidas = partidas;
     }
 
+    //Dá início aos "listeners"
     init() {
+        //atualiza a UI com as partidas recebidas no constructos
         this.atualizarUI();
 
-        //adiciona o evento de abrir o modal
+        //adiciona o listener do evento de abrir o modal
         this.mostraModalBtn.addEventListener(
             "click",
             this.mostrarModal.bind(this)
         );
 
-        //adiciona o evento de fechar o modal
+        //adiciona o listener do evento de fechar o modal
         this.fecharModalBtn.addEventListener(
             "click",
             this.esconderModal.bind(this)
         );
 
-        //adiciona o evento de excluir partida
+        //adiciona o listener do evento de excluir partida
         this.confirmarExclusaoBtn.addEventListener(
             "click",
             this.removerPartida.bind(this)
         );
 
-        //adiciona o evento de cancelar a exclusão da partida
+        //adiciona o listener do evento de cancelar a exclusão da partida
         this.cancelarExclusaoBtn.addEventListener(
             "click",
             this.esconderModalExclusao.bind(this)
         );
 
-        //adiciona o evento de criação (envio do formulário) de criar partidas
+        //adiciona o listener do evento de criação (envio do formulário) de criar partidas
         this.criarPartidasForm.addEventListener(
             "submit",
             this.criarPartida.bind(this)
@@ -63,17 +65,23 @@ class App {
         });
     }
 
+    //cria uma nova partida quando o formulário "criarPartidasForm" é submetido
     async criarPartida(e) {
         e.preventDefault();
 
+        //coletando as referências de todos os inputs
         const [tituloInput, dataInput, horaInput, enderecoInput] = e.target;
 
+        //separando as informações (ex: dia da hora)
         const dataSplit = dataInput.value.split("-");
         const horaSplit = horaInput.value.split(":");
 
+        //construindo a nova partida
         const partida = {
+            //gerando um id
             _id: Math.round(Math.random() * 999999),
             titulo: tituloInput.value,
+            //guardando dia, mes e ano individualmente
             data: {
                 dia: dataSplit[2],
                 mes: dataSplit[1],
@@ -87,6 +95,7 @@ class App {
             jogadores: [],
         };
 
+        //fazendo a requisição de criação de partida
         const response = await fetch("/partidas", {
             method: "PUT",
             headers: {
@@ -94,8 +103,11 @@ class App {
             },
             body: JSON.stringify(partida),
         });
+
+        //coletando as partidas
         const partidas = await response.json();
 
+        //atualizando o estado (partidas) e a interface
         await this.atualizarPartidas(partidas);
         this.esconderModal();
 
@@ -107,14 +119,17 @@ class App {
                 "";
     }
 
+    //remove uma partida
     async removerPartida() {
+        //fazendo a requisição de remoção, passando o id da partida como "query param"
         const response = await fetch(`/partidas?id=${this.idPartidaAlvo}`, {
             method: "DELETE",
         });
+
+        //coletando as novas partidas (dados atualiazados)
         const partidas = await response.json();
 
-        this.partidas = partidas;
-
+        //atualizando o estado e a interface
         await this.atualizarPartidas(partidas);
         this.esconderModalExclusao();
     }
@@ -137,27 +152,27 @@ class App {
         this.modalExclusao.classList.add("hidden");
     }
 
-    //atualiza a interface (lista) com as partidas atualizadas
+    //atualiza a interface (lista) com as partidas
     atualizarUI() {
         if (this.partidas) {
+            //declarando o container dos filhos da lista (partidas)
             const children = [];
 
             //criando um elemento para cada partida
             this.partidas.forEach((partida) => {
+                //criadno o elemento da partida e atribuindo um id
                 const elementoPartida = this.criarElemento(
                     "li",
                     partida.titulo
                 );
                 elementoPartida.setAttribute("id", partida._id);
 
-                const spanBotoes = document.createElement("span");
-
+                //criando o botão de exclusão
                 const botaoExcluir = this.criarElemento("button", "remover");
                 botaoExcluir.setAttribute("type", "button");
                 botaoExcluir.classList.add("remover");
 
-                spanBotoes.replaceChildren(botaoExcluir);
-                elementoPartida.appendChild(spanBotoes);
+                elementoPartida.appendChild(botaoExcluir);
 
                 children.push(elementoPartida);
             });
