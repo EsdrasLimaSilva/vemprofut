@@ -20,6 +20,8 @@ const adicionarPartida = (partida) => {
     const partidas = pegarPartidas();
     partidas.push(partida);
     escreverPartidas(partidas);
+
+    return partidas;
 };
 
 const removerPartida = (idPartida) => {
@@ -28,6 +30,8 @@ const removerPartida = (idPartida) => {
         (partida) => partida._id != idPartida
     );
     escreverPartidas(novasPartidas);
+
+    return novasPartidas;
 };
 
 const atualizarJogador = (idPartida, jogador) => {
@@ -41,26 +45,37 @@ const atualizarJogador = (idPartida, jogador) => {
     partidas[partidaIndex].jogadores[jogadorIndex] = jogador;
 
     escreverPartidas(partidas);
+
+    return partidas[partidaIndex];
 };
 
 const adicionarJogador = (idPartida, jogador) => {
     const partidas = pegarPartidas();
+    const partidaIndex = partidas.findIndex(
+        (partida) => +partida._id === +idPartida
+    );
+
     partidas
         .find((partida) => partida._id === idPartida)
         .jogadores.push(jogador);
+
     escreverPartidas(partidas);
+
+    return partidas[partidaIndex];
 };
 
 const removerJogador = (idPartida, idJogador) => {
     const partidas = pegarPartidas();
     const partidaIndex = partidas.findIndex(
-        (partida) => partida._id === idPartida
+        (partida) => +partida._id === +idPartida
     );
 
     partidas[partidaIndex].jogadores = partidas[partidaIndex].jogadores.filter(
         (jogador) => jogador._id !== idJogador
     );
     escreverPartidas(partidas);
+
+    return partidas[partidaIndex];
 };
 
 module.exports = {

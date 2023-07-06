@@ -87,14 +87,16 @@ class App {
             jogadores: [],
         };
 
-        await fetch("/partidas", {
+        const response = await fetch("/partidas", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(partida),
         });
-        await this.atualizarPartidas();
+        const partidas = await response.json();
+
+        await this.atualizarPartidas(partidas);
         this.esconderModal();
 
         //resetando valores
@@ -106,12 +108,15 @@ class App {
     }
 
     async removerPartida() {
-        await fetch(`/partidas?id=${this.idPartidaAlvo}`, {
+        const response = await fetch(`/partidas?id=${this.idPartidaAlvo}`, {
             method: "DELETE",
         });
+        const partidas = await response.json();
 
+        this.partidas = partidas;
+
+        await this.atualizarPartidas(partidas);
         this.esconderModalExclusao();
-        await this.atualizarPartidas();
     }
 
     // Mostra o modal de criação para o usário
@@ -167,9 +172,7 @@ class App {
         }
     }
 
-    async atualizarPartidas() {
-        const response = await fetch("/partidas");
-        const partidas = await response.json();
+    async atualizarPartidas(partidas) {
         this.partidas = partidas;
         this.atualizarUI();
     }

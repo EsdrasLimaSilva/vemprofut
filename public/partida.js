@@ -75,7 +75,7 @@ class App {
         );
         jogador.status = novoStatus;
 
-        await fetch("/jogador", {
+        const response = await fetch("/jogador", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -86,15 +86,10 @@ class App {
                 novoJogador: false,
             }),
         });
-
-        this.atualizarPartida();
-        this.preencherUi();
-    }
-    async atualizarPartida() {
-        const response = await fetch(`/partida/${this.partida._id}`);
         const partida = await response.json();
-
         this.partida = partida;
+
+        this.preencherUi();
     }
 
     async criarNovoJogador(e) {
@@ -108,7 +103,7 @@ class App {
             status: "duvida",
         };
 
-        await fetch("/jogador", {
+        const response = await fetch("/jogador", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -120,22 +115,27 @@ class App {
             }),
         });
 
+        const partida = await response.json();
+
         nomeInput.value = telefoneInput.value = "";
+        this.partida = partida;
         this.esconderModal(this.modalCriacao);
-        await this.atualizarPartida();
         this.preencherUi();
     }
 
     async excluirJogador() {
-        await fetch(
+        const response = await fetch(
             `/jogador?idJogador=${this.idJogadorAlvo}&idPartida=${this.partida._id}`,
             {
                 method: "DELETE",
             }
         );
 
+        const partida = await response.json();
+
+        this.partida = partida;
+
         this.esconderModal(this.modalConfirmacao);
-        await this.atualizarPartida();
         this.preencherUi();
     }
 

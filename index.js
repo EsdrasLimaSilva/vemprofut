@@ -21,21 +21,22 @@ app.use(json());
 //retorna todas as partidas
 app.get("/partidas", (req, res) => {
     const partidas = pegarPartidas();
-    res.status(200).json(partidas);
+    res.status(200).send(partidas);
 });
 
 //adiciona uma nova partida
 app.put("/partidas", (req, res) => {
     const partida = req.body;
-    adicionarPartida(partida);
-    res.status(200).json({ message: "ok" });
+    const partidas = adicionarPartida(partida);
+
+    res.status(200).json(partidas);
 });
 
 //delte uma partida
 app.delete("/partidas", (req, res) => {
     const idPartida = req.query.id;
-    removerPartida(idPartida);
-    res.status(200).json({ message: "ok" });
+    const partidas = removerPartida(idPartida);
+    res.status(200).json(partidas);
 });
 
 //resolve uma requisição de uma partida específica
@@ -44,24 +45,30 @@ app.get("/partida/:idPartida", (req, res) => {
     res.status(200).send(partida);
 });
 
-//atualiza um jogador especifigo
+//atualiza um jogador especifigo se ele existir. Caso contrário cria um novo jogador
 app.put("/jogador", (req, res) => {
     const body = req.body;
 
-    console.log(req.body.novoJogador);
+    let partidaAtualizada;
 
-    if (!req.body.novoJogador) atualizarJogador(body.idPartida, body.jogador);
-    else adicionarJogador(req.body.idPartida, req.body.jogador);
-    res.json({ message: "ok" });
+    if (!req.body.novoJogador) {
+        partidaAtualizada = atualizarJogador(body.idPartida, body.jogador);
+    } else {
+        partidaAtualizada = adicionarJogador(
+            req.body.idPartida,
+            req.body.jogador
+        );
+    }
+    res.send(partidaAtualizada);
 });
 
 app.delete("/jogador", (req, res) => {
     const idJogador = req.query.idJogador;
     const idPartida = req.query.idPartida;
 
-    removerJogador(idPartida, idJogador);
+    const partida = removerJogador(idPartida, idJogador);
 
-    res.status(200).json({ message: "ok" });
+    res.status(200).json(partida);
 });
 
 app.listen(port);
