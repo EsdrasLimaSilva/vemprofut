@@ -18,13 +18,17 @@ class App {
         this.partida = partida;
     }
 
+    //inicia a aplicação
     init() {
+        //atualiza a UI com as partidas (passadas na construção da classe)
         this.preencherUi();
 
+        //adiciona o listencer de mudar o status do jogador
         this.elementoRaiz.addEventListener("change", (e) =>
             this.mudarStatusJogador(e.target.closest("li").id, e.target.value)
         );
 
+        //adiciona o listencer de remover jogador (via event delegation)
         this.elementoRaiz.addEventListener("click", (e) => {
             const removerBtn = e.target.closest("button");
 
@@ -37,44 +41,56 @@ class App {
             }
         });
 
+        //adiciona o listencer de adicionar um novo jogador
         this.novoJogadorForm.addEventListener(
             "submit",
             this.criarNovoJogador.bind(this)
         );
 
+        //adiciona o listencer de mostrar o form de adicionar jogador
         this.adicionarJogadorBtn.addEventListener("click", () => {
             this.mostrarModal(this.modalCriacao);
         });
 
+        //adiciona o listencer de esconder o formulário
         this.cancelarModalCriacaoBtn.addEventListener("click", () => {
             this.esconderModal(this.modalCriacao);
         });
 
+        //adiciona o listencer de remover jogador
         this.confirmarExclusaoBtn.addEventListener("click", () =>
             this.excluirJogador()
         );
 
+        //adiciona o listencer de cancelar exclusão
         this.cancelarConfirmacaoBtn.addEventListener("click", () => {
             this.esconderModal(this.modalConfirmacao);
         });
     }
 
+    //mostra um modal genérico
     mostrarModal(modal) {
         modal.classList.remove("hidden");
         modal.classList.remove("hidden");
     }
 
+    //esconde um modal genérico
     esconderModal(modal) {
         modal.classList.add("hidden");
         modal.classList.add("hidden");
     }
 
+    //muda o status do jogador
     async mudarStatusJogador(idJogador, novoStatus) {
+        //encontrando o jogador dentro da partida
         const jogador = this.partida.jogadores.find(
             (jogador) => jogador._id === idJogador
         );
+
+        //atualizando o status do jogador
         jogador.status = novoStatus;
 
+        //fazendo a requisção de atualização com os dados do jogador atualizado
         const response = await fetch("/jogador", {
             method: "PUT",
             headers: {
@@ -86,16 +102,21 @@ class App {
                 novoJogador: false,
             }),
         });
+
+        //recebendo a nova partida e atualizando estado e ui
         const partida = await response.json();
         this.partida = partida;
-
         this.preencherUi();
     }
 
+    //cria um novo jogador
     async criarNovoJogador(e) {
         e.preventDefault();
+
+        //coletando as referências do input
         const [nomeInput, telefoneInput] = e.target;
 
+        //construindo o objeto do novo jogador
         const jogador = {
             _id: String(Math.round(Math.random() * 99999999)),
             nome: nomeInput.value,
@@ -103,6 +124,7 @@ class App {
             status: "duvida",
         };
 
+        //fazendo a requisição de criação
         const response = await fetch("/jogador", {
             method: "PUT",
             headers: {
@@ -117,13 +139,19 @@ class App {
 
         const partida = await response.json();
 
+        //resetando os "values" dos inputs
         nomeInput.value = telefoneInput.value = "";
+
+        //atualizando estado e interface
         this.partida = partida;
-        this.esconderModal(this.modalCriacao);
         this.preencherUi();
+
+        this.esconderModal(this.modalCriacao);
     }
 
+    //remove um jogador da partida
     async excluirJogador() {
+        //fazendo a requisição de remoção
         const response = await fetch(
             `/jogador?idJogador=${this.idJogadorAlvo}&idPartida=${this.partida._id}`,
             {
@@ -131,12 +159,12 @@ class App {
             }
         );
 
+        //coletando a partida e atualizando estado e interface
         const partida = await response.json();
-
         this.partida = partida;
+        this.preencherUi();
 
         this.esconderModal(this.modalConfirmacao);
-        this.preencherUi();
     }
 
     preencherUi() {
@@ -165,6 +193,7 @@ class App {
         //preenchendo a lista de jogadores
         const childrenJogadores = [];
         this.partida.jogadores.forEach((jogador) => {
+            //crianndo o elemento do jogador (container)
             const elementoJogador = this.criarElemento("li");
             elementoJogador.classList.add(jogador.status);
             elementoJogador.setAttribute("id", jogador._id);
@@ -238,7 +267,7 @@ class App {
         );
     }
 
-    //cria um elemento
+    //cria um elemento genérico
     criarElemento(tag, content = null) {
         const element = document.createElement(tag);
         if (content) {

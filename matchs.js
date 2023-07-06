@@ -1,21 +1,25 @@
 const fs = require("fs");
 
+//recebe as partidas e escreve elas no arquivo json
 const escreverPartidas = (partidas) => {
     fs.writeFileSync("./partidas.json", JSON.stringify(partidas), {
         encoding: "utf-8",
     });
 };
 
+//lê as partidas no arquivo json e retorna elas
 const pegarPartidas = () => {
     const file = fs.readFileSync("./partidas.json", "utf-8");
     return JSON.parse(file);
 };
 
+//busca uma determinada partida no arquivo
 const buscarPartida = (idPartida) => {
     const partidas = pegarPartidas();
     return partidas.find((partida) => String(partida._id) === idPartida);
 };
 
+//adiciona uma nova partida e retorna todas as partidas (incluindo a criada)
 const adicionarPartida = (partida) => {
     const partidas = pegarPartidas();
     partidas.push(partida);
@@ -24,6 +28,7 @@ const adicionarPartida = (partida) => {
     return partidas;
 };
 
+//remove uma partida específica
 const removerPartida = (idPartida) => {
     const partidas = pegarPartidas();
     const novasPartidas = partidas.filter(
@@ -34,6 +39,7 @@ const removerPartida = (idPartida) => {
     return novasPartidas;
 };
 
+//atualiza os dados de um jogador específico
 const atualizarJogador = (idPartida, jogador) => {
     const partidas = pegarPartidas();
     const partidaIndex = partidas.findIndex(
@@ -49,6 +55,7 @@ const atualizarJogador = (idPartida, jogador) => {
     return partidas[partidaIndex];
 };
 
+//cria um novo jogador
 const adicionarJogador = (idPartida, jogador) => {
     const partidas = pegarPartidas();
     const partidaIndex = partidas.findIndex(
@@ -64,6 +71,7 @@ const adicionarJogador = (idPartida, jogador) => {
     return partidas[partidaIndex];
 };
 
+//exclui um jogador específico de uma partida específica
 const removerJogador = (idPartida, idJogador) => {
     const partidas = pegarPartidas();
     const partidaIndex = partidas.findIndex(
@@ -78,6 +86,7 @@ const removerJogador = (idPartida, idJogador) => {
     return partidas[partidaIndex];
 };
 
+//exportando todas as funções
 module.exports = {
     escreverPartidas,
     pegarPartidas,

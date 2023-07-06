@@ -2,6 +2,7 @@ const express = require("express");
 const { json } = require("express");
 const path = require("path");
 
+//importa as funções (utils)
 const {
     adicionarPartida,
     pegarPartidas,
@@ -29,14 +30,14 @@ app.put("/partidas", (req, res) => {
     const partida = req.body;
     const partidas = adicionarPartida(partida);
 
-    res.status(200).json(partidas);
+    res.status(200).send(partidas);
 });
 
-//delte uma partida
+//remove uma partida
 app.delete("/partidas", (req, res) => {
     const idPartida = req.query.id;
     const partidas = removerPartida(idPartida);
-    res.status(200).json(partidas);
+    res.status(200).send(partidas);
 });
 
 //resolve uma requisição de uma partida específica
@@ -62,6 +63,7 @@ app.put("/jogador", (req, res) => {
     res.send(partidaAtualizada);
 });
 
+//remove um jogador específico de uma partida específica
 app.delete("/jogador", (req, res) => {
     const idJogador = req.query.idJogador;
     const idPartida = req.query.idPartida;

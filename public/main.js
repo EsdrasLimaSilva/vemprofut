@@ -187,6 +187,7 @@ class App {
         }
     }
 
+    //atualiza o estado e a interface com as novas partidas
     async atualizarPartidas(partidas) {
         this.partidas = partidas;
         this.atualizarUI();
